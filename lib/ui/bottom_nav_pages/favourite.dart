@@ -13,7 +13,7 @@ class _FavouriteState extends State<Favourite> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: fetchData("users-favourite-items"),
+        child: fetchData("users-favourite-items", false),
       ),
     );
   }

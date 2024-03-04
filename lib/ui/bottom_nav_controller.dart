@@ -6,6 +6,8 @@ import 'package:newecommarce/ui/bottom_nav_pages/home.dart';
 import 'package:newecommarce/ui/bottom_nav_pages/profile.dart';
 
 class BottomNavController extends StatefulWidget {
+  const BottomNavController({super.key});
+
 
   @override
   _BottomNavControllerState createState() => _BottomNavControllerState();
