@@ -1,10 +1,14 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newecommarce/const/AppColors.dart';
+import 'package:newecommarce/ui/bottom_nav_pages/home.dart';
 import 'package:newecommarce/ui/login_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'bottom_nav_controller.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,9 +18,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   void initState() {
-    Timer(const Duration(seconds: 3),()=>Navigator.push(context, CupertinoPageRoute(builder: (_)=>LoginScreen())));
+    Timer(const Duration(seconds: 3),()=>Navigator.push(context, CupertinoPageRoute(builder: (_)=>
+       auth.currentUser==null? LoginScreen():BottomNavController())));
     super.initState();
   }
   @override
