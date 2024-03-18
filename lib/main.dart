@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:newecommarce/ui/splash_screen.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
