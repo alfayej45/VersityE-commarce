@@ -3,19 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newecommarce/const/AppColors.dart';
-
 import '../../widgets/profile_widget.dart';
 
 class Profile extends StatefulWidget {
   @override
   _ProfileState createState() => _ProfileState();
 }
-
 class _ProfileState extends State<Profile> {
   TextEditingController ?_nameController;
   TextEditingController ?_phoneController;
   TextEditingController ?_ageController;
-
 
   setDataToTextField(data){
     return  Column(
@@ -44,7 +41,6 @@ class _ProfileState extends State<Profile> {
         }
         ).then((value) => print("Updated Successfully"));
   }
-
 
   @override
   Widget build(BuildContext context) {

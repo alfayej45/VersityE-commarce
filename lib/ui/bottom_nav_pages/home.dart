@@ -72,27 +72,48 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 20.h,),
-              Padding(
-                padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                child: TextFormField(
-                  readOnly: true,
-                  decoration: InputDecoration(
-                    fillColor: Colors.white,
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                        borderSide: BorderSide(color: Colors.blue)),
-                    enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(0)),
-                        borderSide: BorderSide(color: Colors.grey)),
-                    hintText: "Search products here",
-                    hintStyle: TextStyle(fontSize: 15.sp),
+          Padding(
+            padding: const EdgeInsets.only(left: 10,right: 10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10,right: 10),
+                    child: Container(
+                      height: 50,
+                      child: TextFormField(
+                        //  readOnly: true,
+                        decoration: InputDecoration(
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderSide: BorderSide(color: Colors.blue)),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(15)),
+                              borderSide: BorderSide(color: Colors.grey)),
+                          hintText: "Search products here",
+                          hintStyle: TextStyle(fontSize: 15.sp),
+                        ),
+                        // onTap: () => Navigator.push(context,
+                        //     CupertinoPageRoute(builder: (_) => SearchScreen())),
+                      ),
+                    ),
                   ),
-                  onTap: () => Navigator.push(context,
-                      CupertinoPageRoute(builder: (_) => SearchScreen())),
+
                 ),
-              ),
+                CircleAvatar(
+                  child: Center(
+                    child: Icon(Icons.filter_alt),
+
+                  ),
+                ),
+              ],
+            ),
+          ),
               SizedBox(
                 height: 20.h,
               ),
@@ -125,43 +146,56 @@ class _HomeState extends State<Home> {
               SizedBox(
                 height: 10.h,
               ),
-              DotsIndicator(
-                dotsCount:
-                    _carouselImages.length == 0 ? 1 : _carouselImages.length,
-                position: _dotPosition,
-                decorator: DotsDecorator(
-                  activeColor: AppColors.deep_orange,
-                  color: AppColors.deep_orange.withOpacity(0.5),
-                  spacing: EdgeInsets.all(2),
-                  activeSize: Size(8, 8),
-                  size: Size(6, 6),
+              Align(
+                alignment:Alignment.center,
+                child: DotsIndicator(
+                  dotsCount:
+                      _carouselImages.length == 0 ? 1 : _carouselImages.length,
+                  position: _dotPosition,
+                  decorator: DotsDecorator(
+                    activeColor: AppColors.deep_orange,
+                    color: AppColors.deep_orange.withOpacity(0.5),
+                    spacing: EdgeInsets.all(2),
+                    activeSize: Size(8, 8),
+                    size: Size(6, 6),
+                  ),
                 ),
               ),
               SizedBox(
                 height: 15.h,
               ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Text('Categories',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),),
+              ),
               SizedBox(
-                height: 80,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: categories.length,
-                  shrinkWrap: true,
-                  primary: false,
-                  itemBuilder: (_, index) {
-                    return Container(
-                      margin: const EdgeInsets.only(right: 10),
-                      width: 80,
-                      decoration: BoxDecoration(
-                        color: Color(0xFFF2F2F2),
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(
-                          color: Colors.black.withOpacity(.1),
-                          width: 2,
+                height: 13.h,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: SizedBox(
+                  height: 80,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: categories.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (_, index) {
+                      return Container(
+                        margin: const EdgeInsets.only(right: 10),
+                        width: 80,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF2F2F2),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: Colors.black.withOpacity(.1),
+                            width: 2,
+                          ),
                         ),
-                      ),
-                      child: Image.asset(categories[index]),
-                    );
-                  },
+                        child: Image.asset(categories[index]),
+                      );
+                    },
+                  ),
                 ),
               ),
               Padding(
@@ -173,8 +207,8 @@ class _HomeState extends State<Home> {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
-                      mainAxisSpacing: 20,
-                      childAspectRatio: .9
+                      mainAxisSpacing: 15,
+                      childAspectRatio: .85
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     return
@@ -198,7 +232,6 @@ class _HomeState extends State<Home> {
                                     children: [
                                       Expanded(child: ClipRRect(
                                         borderRadius: BorderRadius.horizontal(
-
                                           left: Radius.circular(8),
                                           right: Radius.circular(8),
                                         ),
