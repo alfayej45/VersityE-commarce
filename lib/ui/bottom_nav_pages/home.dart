@@ -235,8 +235,6 @@ class _HomeState extends State<Home> {
                                           left: Radius.circular(8),
                                           right: Radius.circular(8),
                                         ),
-
-
                                           child: Image.network(_products[index]["product-img"][0], height: 140.h,fit: BoxFit.fill,))),
                                     ],
                                   ),

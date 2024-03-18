@@ -22,7 +22,9 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Timer(const Duration(seconds: 3),()=>Navigator.push(context, CupertinoPageRoute(builder: (_)=>
-       auth.currentUser==null? LoginScreen():BottomNavController())));
+
+       auth.currentUser==null? LoginScreen():BottomNavController()
+    )));
     super.initState();
   }
   @override

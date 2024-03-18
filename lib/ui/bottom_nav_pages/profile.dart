@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:newecommarce/const/AppColors.dart';
+import 'package:newecommarce/ui/login_screen.dart';
 import '../../widgets/profile_widget.dart';
 
 class Profile extends StatefulWidget {
@@ -152,6 +153,9 @@ class _ProfileState extends State<Profile> {
                           contentPadding: EdgeInsets.only(left: 8,right: 8),
                           minLeadingWidth: 5,
                           minVerticalPadding: 0,
+                          onTap: (){
+                            signOut();
+                          },
                           title:Text(
                             'Log Out',
                             style: TextStyle(
@@ -161,8 +165,6 @@ class _ProfileState extends State<Profile> {
                           leading: Icon(Icons.power_settings_new,size: 25,color: Colors.deepPurpleAccent,),
                           trailing: Icon(Icons.arrow_forward_ios_outlined,size: 22,),
                         )
-                        
-
                       ],
                     ),
                   ),
@@ -174,5 +176,10 @@ class _ProfileState extends State<Profile> {
         ),
       )),
     );
+  }
+
+  Future signOut()  async{
+    await FirebaseAuth.instance.signOut();
+    Navigator.push(context, MaterialPageRoute(builder: (_)=>LoginScreen()));
   }
 }
