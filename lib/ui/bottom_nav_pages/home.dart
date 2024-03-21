@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flexible_grid_view/flexible_grid_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -300,22 +301,64 @@ class _HomeState extends State<Home> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: Colors.black.withOpacity(.5),
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.favorite_border,
-                                        size: 20,
-                                      ),
-                                    ),
+                                  StreamBuilder(
+                                    stream: FirebaseFirestore.instance.collection("users-favourite-items").doc(FirebaseAuth.instance.currentUser!.email)
+                                        .collection("items").where("name",isEqualTo: {_products[index]["product-name"]}).snapshots(),
+                                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                                      if(snapshot.data==null){
+                                        return Text("");
+                                      }
+                                      return Padding(
+                                        padding: const EdgeInsets.only(right: 8),
+                                        child: CircleAvatar(
+                                          radius: 16,
+                                          //backgroundColor: Colors.transparent,
+                                          child: InkWell(
+                                            onTap: (){
+                                              if( snapshot.data.docs.length==0){
+                                                addToFavourite('${_products[index]["product-name"]}','${_products[index]["product-price"]}','${_products[index]["product-img"]}');
+                                             setState(() {
+
+                                             });
+                                              }else{
+                                                print("Already Added");
+                                              }
+
+                                            },
+                                            child: snapshot.data.docs.length==0? Icon(
+                                              Icons.favorite_outline,
+                                              color: Colors.red,
+                                            ):Icon(
+                                              Icons.favorite,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+
                                   ),
+                                  // InkWell(
+                                  //   onTap: (){
+                                  //     snapshot.data.docs.length==0?addToFavourite():print("Already Added")
+                                  //   },
+                                  //   child: Container(
+                                  //     height: 30,
+                                  //     width: 30,
+                                  //     decoration: BoxDecoration(
+                                  //       border: Border.all(
+                                  //         color: Colors.black.withOpacity(.5),
+                                  //       ),
+                                  //       shape: BoxShape.circle,
+                                  //     ),
+                                  //     child: Center(
+                                  //       child: Icon(
+                                  //         Icons.favorite_border,
+                                  //         size: 20,
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
                                 ],
                               )
                             ],
@@ -334,5 +377,22 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  Future addToFavourite(String productname,String price,String image) async {
+
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentUser = _auth.currentUser;
+    CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection("users-favourite-items");
+    return _collectionRef
+        .doc(currentUser!.email)
+        .collection("items")
+        .doc()
+        .set({
+      "name": productname,
+      "price":price,
+      "images": image,
+    }).then((value) => print("Added to favourite"));
   }
 }
