@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
                     child: Container(
                       height: 50,
                       child: TextFormField(
-                        //  readOnly: true,
+                         readOnly: true,
                         decoration: InputDecoration(
                           fillColor: Colors.white,
                           focusedBorder: OutlineInputBorder(
@@ -99,8 +99,8 @@ class _HomeState extends State<Home> {
                           hintText: "Search products here",
                           hintStyle: TextStyle(fontSize: 15.sp),
                         ),
-                        // onTap: () => Navigator.push(context,
-                        //     CupertinoPageRoute(builder: (_) => SearchScreen())),
+                        onTap: () => Navigator.push(context,
+                            CupertinoPageRoute(builder: (_) => SearchScreen())),
                       ),
                     ),
                   ),
@@ -252,7 +252,7 @@ class _HomeState extends State<Home> {
                                       ),
                                     ),
                                   ),
-                                  Spacer(),
+                                  SizedBox(height: 5,),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(horizontal: 8),
                                     child: Row(
@@ -303,31 +303,25 @@ class _HomeState extends State<Home> {
                                   ),
                                   StreamBuilder(
                                     stream: FirebaseFirestore.instance.collection("users-favourite-items").doc(FirebaseAuth.instance.currentUser!.email)
-                                        .collection("items").where("name",isEqualTo: {_products[index]["product-name"]}).snapshots(),
-                                    builder: (BuildContext context, AsyncSnapshot snapshot){
-                                      if(snapshot.data==null){
+                                        .collection("items").where("name",isEqualTo: _products[index]["product-name"]).snapshots(),
+                                    builder: (BuildContext context, AsyncSnapshot snapshots){
+                                      if(snapshots.data==null){
                                         return Text("");
                                       }
+                                      print( snapshots.data.docs.length);
                                       return Padding(
                                         padding: const EdgeInsets.only(right: 8),
                                         child: CircleAvatar(
-                                          radius: 16,
-                                          //backgroundColor: Colors.transparent,
-                                          child: InkWell(
-                                            onTap: (){
-                                              if( snapshot.data.docs.length==0){
-                                                addToFavourite('${_products[index]["product-name"]}','${_products[index]["product-price"]}','${_products[index]["product-img"]}');
-                                             setState(() {
-
-                                             });
-                                              }else{
-                                                print("Already Added");
-                                              }
-
-                                            },
-                                            child: snapshot.data.docs.length==0? Icon(
+                                          backgroundColor: Colors.red,
+                                          child: IconButton(
+                                            onPressed: () => snapshots.data.docs.length==0?addToFavourite(
+                                                _products[index]["product-name"],
+                                                _products[index]["product-price"].toString(),
+                                                _products[index]["product-img"][0]
+                                            ):deleteFavourite(snapshots.data.docs[0]["doc"]),
+                                            icon: snapshots.data.docs.length==0? Icon(
                                               Icons.favorite_outline,
-                                              color: Colors.red,
+                                              color: Colors.white,
                                             ):Icon(
                                               Icons.favorite,
                                               color: Colors.white,
@@ -385,14 +379,27 @@ class _HomeState extends State<Home> {
     var currentUser = _auth.currentUser;
     CollectionReference _collectionRef =
     FirebaseFirestore.instance.collection("users-favourite-items");
+    var id = DateTime.now().millisecondsSinceEpoch;
     return _collectionRef
         .doc(currentUser!.email)
         .collection("items")
-        .doc()
+        .doc(id.toString())
         .set({
       "name": productname,
       "price":price,
       "images": image,
+      "doc":id.toString(),
     }).then((value) => print("Added to favourite"));
+  }
+  Future deleteFavourite(String doc) async {
+
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    var currentUser = _auth.currentUser;
+    CollectionReference _collectionRef =
+    FirebaseFirestore.instance.collection("users-favourite-items");
+    return _collectionRef
+        .doc(currentUser!.email)
+        .collection("items")
+        .doc(doc).delete() .then((value) => print("Added to favourite"));
   }
 }

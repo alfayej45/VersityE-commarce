@@ -87,7 +87,7 @@ class _CartItemState extends State<CartItem> {
                 SizedBox(
                   height: 15.h,
                 ),
-                if (widget.cart)
+
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.end,
                     children: [

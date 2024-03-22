@@ -21,6 +21,8 @@ Widget fetchData (String collectionName, bool carts){
       }
 
       return ListView.builder(
+        primary: false,
+          shrinkWrap: true,
           itemCount:
           snapshot.data == null ? 0 : snapshot.data!.docs.length,
           itemBuilder: (_, index) {
@@ -29,7 +31,7 @@ Widget fetchData (String collectionName, bool carts){
 
             return
               CartItem(
-                image:  snapshot.data!.docs[index]["images"][0], price: _documentSnapshot['price'].toString(),
+                image: carts? snapshot.data!.docs[index]["images"][0]:snapshot.data!.docs[index]["images"], price: _documentSnapshot['price'].toString(),
                 quantity: carts?snapshot.data!.docs[index]["qty"]:0,
                 add: (){},
                 remove: (){},

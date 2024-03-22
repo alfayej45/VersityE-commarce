@@ -12,8 +12,16 @@ class _FavouriteState extends State<Favourite> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Wishlist"),
+      ),
       body: SafeArea(
-        child: fetchData("users-favourite-items", false),
+        child: Column(
+          children: [
+            fetchData("users-favourite-items", false),
+          ],
+        )
       ),
     );
   }

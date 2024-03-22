@@ -13,8 +13,16 @@ class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Carts"),
+      ),
       body: SafeArea(
-        child: fetchData("users-cart-items",true),
+          child: Column(
+            children: [
+              fetchData("users-cart-items",true),
+            ],
+          )
       ),
     );
   }

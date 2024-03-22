@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:newecommarce/const/AppColors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,21 +14,23 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
-
+var qty = 1;
   Future addToCart() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     var currentUser = _auth.currentUser;
     CollectionReference _collectionRef =
         FirebaseFirestore.instance.collection("users-cart-items");
+    var id = DateTime.now().microsecondsSinceEpoch;
     return _collectionRef
         .doc(currentUser!.email)
         .collection("items")
-        .doc()
+        .doc(id.toString())
         .set({
       "name": widget._product["product-name"],
       "price": widget._product["product-price"],
       "images": widget._product["product-img"],
-      "qty": 1,
+      "qty": qty,
+      "doc":id.toString()
     }).then((value) => print("Added to cart"));
   }
 
@@ -59,7 +62,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             backgroundColor: AppColors.deep_orange,
             child: IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back,
                   color: Colors.white,
                 )),
@@ -100,40 +103,80 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CarouselSlider(
-                items: widget._product['product-img']
-                    .map<Widget>((item) => Padding(
-                          padding: const EdgeInsets.only(left: 3, right: 3),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(item),
-                                    fit: BoxFit.fitWidth)),
-                          ),
-                        ))
-                    .toList(),
-                options: CarouselOptions(
-                    autoPlay: false,
-                    enlargeCenterPage: true,
-                    viewportFraction: 0.8,
-                    enlargeStrategy: CenterPageEnlargeStrategy.height,
-                    onPageChanged: (val, carouselPageChangedReason) {
-                      setState(() {});
-                    })),
-            Text(
-              widget._product['product-name'],
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CarouselSlider(
+                    items: widget._product['product-img']
+                        .map<Widget>((item) => Padding(
+                      padding: const EdgeInsets.only(left: 3, right: 3),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: NetworkImage(item),
+                                fit: BoxFit.fitWidth)),
+                      ),
+                    ))
+                        .toList(),
+                    options: CarouselOptions(
+                        autoPlay: false,
+                        enlargeCenterPage: true,
+                        viewportFraction: 0.8,
+                        enlargeStrategy: CenterPageEnlargeStrategy.height,
+                        onPageChanged: (val, carouselPageChangedReason) {
+                          setState(() {});
+                        })),
+                const Text(
+                  'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      "bdt ${widget._product['product-price'].toString()}",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 30, color: Colors.red),
+                    ),
+                    Row(
+                      children: [
+                        IconButton(
+                            style: IconButton.styleFrom(
+                                backgroundColor: Colors.black
+                            ),
+                            onPressed: (){
+                        if(qty != 1){
+                          qty--;
+                          setState(() {
+
+                          });
+                        }
+                        }, icon: const Icon(Icons.remove, color:Colors.white ,)),
+                        Text(qty.toString()),
+                        IconButton(
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.black
+                            ),
+                            onPressed: (){
+                          qty++;
+                          setState(() {
+
+                          });
+                        }, icon: const Icon(Icons.add, color: Colors.white,))
+                      ],
+                    )
+                  ],
+                ),
+                const Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in'),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
             ),
-            Text(widget._product['product-description']),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "\$ ${widget._product['product-price'].toString()}",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold, fontSize: 30, color: Colors.red),
-            ),
-            Divider(),
+          ),
+
             SizedBox(
               width: 1.sw,
               height: 56.h,
@@ -149,6 +192,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 ),
               ),
             ),
+            SizedBox(height: 20,)
           ],
         ),
       )),
