@@ -19,7 +19,8 @@ class _FavouriteState extends State<Favourite> {
       body: SafeArea(
         child: Column(
           children: [
-            fetchData("users-favourite-items", false),
+            FetchData(collectionName: "users-favourite-items", carts: false)
+            // fetchData("users-favourite-items", false),
           ],
         )
       ),

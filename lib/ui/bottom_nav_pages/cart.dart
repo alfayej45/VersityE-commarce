@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +21,8 @@ class _CartState extends State<Cart> {
       body: SafeArea(
           child: Column(
             children: [
-              fetchData("users-cart-items",true),
+              FetchData(collectionName:"users-cart-items", carts:true)
+              //fetchData("users-cart-items",true),
             ],
           )
       ),

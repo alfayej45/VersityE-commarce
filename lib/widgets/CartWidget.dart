@@ -65,7 +65,7 @@ class _CartItemState extends State<CartItem> {
                     maxLines: 2,
                     style: const TextStyle(
                         fontWeight: FontWeight.w700,
-                        fontSize: 16,
+                        fontSize: 14,
                         overflow: TextOverflow.ellipsis),
                   ),
                 ),
@@ -85,7 +85,7 @@ class _CartItemState extends State<CartItem> {
                   ],
                 ),
                 SizedBox(
-                  height: 15.h,
+                  height: 10.h,
                 ),
 
                   Row(
@@ -133,14 +133,17 @@ class _CartItemState extends State<CartItem> {
                             )),
                       ),
                       const Spacer(),
-                      IconButton(
-                          onPressed: widget.delete,
-                          padding: EdgeInsets.zero,
-                          style: const ButtonStyle(
-                            tapTargetSize: MaterialTapTargetSize
-                                .shrinkWrap, // the '2023' part
-                          ),
-                          icon: Icon(Icons.delete))
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: IconButton(
+                            onPressed: widget.delete,
+                            padding: EdgeInsets.zero,
+                            style: const ButtonStyle(
+                              tapTargetSize: MaterialTapTargetSize
+                                  .shrinkWrap, // the '2023' part
+                            ),
+                            icon: Icon(Icons.delete,color: Colors.red,)),
+                      )
                     ],
                   )
               ],

@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:newecommarce/const/AppColors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -113,6 +114,8 @@ var qty = 1;
                       padding: const EdgeInsets.only(left: 3, right: 3),
                       child: Container(
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+
                             image: DecorationImage(
                                 image: NetworkImage(item),
                                 fit: BoxFit.fitWidth)),
@@ -131,17 +134,18 @@ var qty = 1;
                   'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                 ),
                 Row(
                   children: [
                     Text(
-                      "bdt ${widget._product['product-price'].toString()}",
+                      "BTD ${widget._product['product-price'].toString()}",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 30, color: Colors.red),
+                          fontWeight: FontWeight.bold, fontSize:24, color: Colors.red),
                     ),
                     Row(
                       children: [
+
                         IconButton(
                             style: IconButton.styleFrom(
                                 backgroundColor: Colors.black
@@ -150,10 +154,10 @@ var qty = 1;
                         if(qty != 1){
                           qty--;
                           setState(() {
-
                           });
                         }
                         }, icon: const Icon(Icons.remove, color:Colors.white ,)),
+
                         Text(qty.toString()),
                         IconButton(
                             style: IconButton.styleFrom(
@@ -181,7 +185,18 @@ var qty = 1;
               width: 1.sw,
               height: 56.h,
               child: ElevatedButton(
-                onPressed: () => addToCart(),
+                onPressed: () {
+                  addToCart();
+                  Fluttertoast.showToast(
+                      msg: "Add to Cart Successfull",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                },
                 child: Text(
                   "Add to cart",
                   style: TextStyle(color: Colors.white, fontSize: 18.sp),
