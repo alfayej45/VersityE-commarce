@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'CartWidget.dart';
 
 class FetchData extends StatefulWidget {
- final String? collectionName;
- bool carts;
-   FetchData({Key? key,required this.collectionName,required this.carts}) : super(key: key);
+ final String collectionName;
+final bool carts;
+   const FetchData({Key? key,required this.collectionName,required this.carts}) : super(key: key);
 
   @override
   State<FetchData> createState() => _State();
